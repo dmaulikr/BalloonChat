@@ -19,7 +19,11 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
+@protocol BCBalloonTextViewDelegate;
+
 @interface BCBalloonTextView : NSControl
+
+@property(nonatomic,weak) NSObject<BCBalloonTextViewDelegate> *delegate;
 
 @property(nonatomic,strong) NSTextView *textView;
 @property(nonatomic,assign) NSTextAlignment alignment;
@@ -39,8 +43,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+typedef NSAttributedString *_NSAttributedStringRef;
+typedef _Nullable _NSAttributedStringRef (^BCBalloonTextViewReplacingBlock)(NSString *string);
 
-@protocol BCBalloonTextViewDelegate<NSObject>
+@protocol BCBalloonTextViewDelegate <NSObject>
+
+@optional
+- (NSAttributedString *)textView:(BCBalloonTextView *)balloonTextView attributedStringForString:(NSString *)string;
+//! @brief The keys of dictionary are patterns of NSRegularExpression. The values of them are BCBalloonTextViewReplacingBlock.
+- (NSDictionary<NSString *, BCBalloonTextViewReplacingBlock> *)regularExpressionPatternsAndBlocksForReplacingInTextView:(BCBalloonTextView *)balloonTextView;
 
 @end
 

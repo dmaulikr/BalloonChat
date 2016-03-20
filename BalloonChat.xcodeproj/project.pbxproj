@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		38712F6E1C9EB1E40096BABC /* special.png in Resources */ = {isa = PBXBuildFile; fileRef = 38712F6D1C9EB1E40096BABC /* special.png */; };
+		38712F6F1C9EB3A70096BABC /* special.png in Resources */ = {isa = PBXBuildFile; fileRef = 38712F6D1C9EB1E40096BABC /* special.png */; };
 		389161A91C944B2E006B6A98 /* BalloonChat.h in Headers */ = {isa = PBXBuildFile; fileRef = 389161A81C944B2E006B6A98 /* BalloonChat.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		389161B01C944B2E006B6A98 /* BalloonChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 389161A51C944B2E006B6A98 /* BalloonChat.framework */; };
 		389161B51C944B2E006B6A98 /* BalloonChatTextViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389161B41C944B2E006B6A98 /* BalloonChatTextViewTests.swift */; };
@@ -24,7 +26,7 @@
 		38EEAA561C9A4EFB0088EE94 /* BalloonSampleRight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 38EEAA521C9A4EF60088EE94 /* BalloonSampleRight@2x.png */; };
 		38F139B91C9475A3000E0FF3 /* BCBalloonTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 38F139B71C9475A3000E0FF3 /* BCBalloonTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		38F139BA1C9475A3000E0FF3 /* BCBalloonTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38F139B81C9475A3000E0FF3 /* BCBalloonTextView.m */; };
-		E040D50CD6A5406F405CC8B3 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D176710B3FCEFFA70C6B8B86 /* libPods.a */; };
+		9F69C1346D7116F3211CDB92 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F43A505386AFCE20B0AF5E /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,7 @@
 
 /* Begin PBXFileReference section */
 		12C0B1D17697D8E2363499CB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		38712F6D1C9EB1E40096BABC /* special.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = special.png; sourceTree = "<group>"; };
 		389161A51C944B2E006B6A98 /* BalloonChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BalloonChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		389161A81C944B2E006B6A98 /* BalloonChat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BalloonChat.h; sourceTree = "<group>"; };
 		389161AA1C944B2E006B6A98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -76,7 +79,7 @@
 		38F139B71C9475A3000E0FF3 /* BCBalloonTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCBalloonTextView.h; sourceTree = "<group>"; };
 		38F139B81C9475A3000E0FF3 /* BCBalloonTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCBalloonTextView.m; sourceTree = "<group>"; };
 		599D7AD0365743B92F44155E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		D176710B3FCEFFA70C6B8B86 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7F43A505386AFCE20B0AF5E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,7 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E040D50CD6A5406F405CC8B3 /* libPods.a in Frameworks */,
+				9F69C1346D7116F3211CDB92 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,6 +152,7 @@
 				3896C7F21C9A46880020F2F1 /* BCBalloonChatView.m */,
 				38EEAA511C9A4EF60088EE94 /* BalloonSampleLeft@2x.png */,
 				38EEAA521C9A4EF60088EE94 /* BalloonSampleRight@2x.png */,
+				38712F6D1C9EB1E40096BABC /* special.png */,
 			);
 			path = BalloonChat;
 			sourceTree = "<group>";
@@ -187,7 +191,7 @@
 		88534559FF44AE370B8CA59F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D176710B3FCEFFA70C6B8B86 /* libPods.a */,
+				A7F43A505386AFCE20B0AF5E /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -343,6 +347,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				38EEAA541C9A4EF60088EE94 /* BalloonSampleRight@2x.png in Resources */,
+				38712F6E1C9EB1E40096BABC /* special.png in Resources */,
 				38EEAA531C9A4EF60088EE94 /* BalloonSampleLeft@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -359,6 +364,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				389161CA1C944B68006B6A98 /* Assets.xcassets in Resources */,
+				38712F6F1C9EB3A70096BABC /* special.png in Resources */,
 				38EEAA561C9A4EFB0088EE94 /* BalloonSampleRight@2x.png in Resources */,
 				389161CD1C944B68006B6A98 /* Main.storyboard in Resources */,
 				38EEAA551C9A4EFB0088EE94 /* BalloonSampleLeft@2x.png in Resources */,
@@ -478,6 +484,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -524,6 +531,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -563,6 +571,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 12C0B1D17697D8E2363499CB /* Pods.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -575,6 +584,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.youknowone.BalloonChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -582,6 +592,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 599D7AD0365743B92F44155E /* Pods.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;

@@ -1,3 +1,3 @@
-platform :osx, '10.8'
+platform :osx, '10.9'
 
-pod 'FoundationExtension', :path => '~/Projects/FoundationExtension'
+pod 'FoundationExtension', '~> 1.2.0'

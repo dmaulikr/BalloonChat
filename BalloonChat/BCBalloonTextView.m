@@ -13,8 +13,40 @@
 #import <cdebug/debug.h>
 
 
+@implementation NSMutableAttributedString (BCBalloonTextViewReplacing)
+
+- (void)replaceByRegularExpressionPatternsAndBlocks:(NSDictionary<NSString *, BCBalloonTextViewReplacingBlock> *)blocks {
+    for (NSString *pattern in blocks.keyEnumerator) {
+        NSString *plain = [self string];
+
+        NSError *error = nil;
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&error];
+        if (regex == nil) {
+            @throw error;
+        }
+
+        __block NSMutableArray *rangeStrings = [NSMutableArray array];
+        NSRange searchRange = NSMakeRange(0, plain.length);
+        [regex enumerateMatchesInString:plain options:0 range:searchRange usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+            [rangeStrings addObject:NSStringFromRange(result.range)];
+        }];
+
+        __block BCBalloonTextViewReplacingBlock replacingBlock = blocks[pattern];
+        for (NSString *rangeString in rangeStrings.reverseObjectEnumerator) {
+            NSRange range = NSRangeFromString(rangeString);
+            NSString *occurance = [plain substringWithRange:range];
+            NSAttributedString *replacement = replacingBlock(occurance);
+            [self replaceCharactersInRange:range withAttributedString:replacement];
+        }
+    }
+}
+
+@end
+
+
 @interface BCBalloonTextView () {
     __strong NSFont *_font;
+    BOOL _autoresizeToFit;
 }
 
 @end
@@ -22,21 +54,21 @@
 
 @implementation BCNinePartImageView
 
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        self.layer = [CAANinePartImageLayer layer];
-    }
-    return self;
-}
-
-- (void)drawRect:(NSRect)dirtyRect {
-    CAANinePartImageLayer *layer = (CAANinePartImageLayer *)self.layer;
-    layer.image = self.image;
-    layer.capInsets = self.capInsets;
-    [layer setNeedsDisplay];
-    [layer displayIfNeeded];
-}
+//- (instancetype)init {
+//    self = [super init];
+//    if (self) {
+//        self.layer = [CAANinePartImageLayer layer];
+//    }
+//    return self;
+//}
+//
+//- (void)drawRect:(NSRect)dirtyRect {
+//    CAANinePartImageLayer *layer = (CAANinePartImageLayer *)self.layer;
+//    layer.image = self.image;
+//    layer.capInsets = self.capInsets;
+//    [layer setNeedsDisplay];
+//    [layer displayIfNeeded];
+//}
 
 @end
 
@@ -58,6 +90,7 @@
     textView.editable = NO;
     textView.verticallyResizable = NO;
     textView.textContainer.lineFragmentPadding = 0.0f;
+    textView.backgroundColor = [NSColor clearColor];
     [self addSubview:textView];
 
     self.textView = textView;
@@ -72,6 +105,7 @@
     [self addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:NULL];
     [self.textView addObserver:self forKeyPath:@"string" options:NSKeyValueObservingOptionNew context:NULL];
     [self.textView addObserver:self forKeyPath:@"font" options:NSKeyValueObservingOptionNew context:NULL];
+    [self addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
@@ -93,6 +127,7 @@
     [self removeObserver:self forKeyPath:@"contentSize"];
     [self.textView removeObserver:self forKeyPath:@"string"];
     [self.textView removeObserver:self forKeyPath:@"font"];
+    [self removeObserver:self forKeyPath:@"frame"];
 }
 
 - (void)setBalloonImage:(NSImage *)image capInsets:(NSEdgeInsets)capInsets {
@@ -130,7 +165,9 @@
     }
     self.backgroundImageView.frame = frame;
     if (frame.size.height > 0.0f && frame.size.width > 0.0f) {
-        self.backgroundImageView.image = [self.backgroundImage ninePartImageWithSize:self.backgroundImageView.bounds.size capInsets:self.backgroundCapInsets];
+        NSImage *image = self.backgroundImage;
+        image = [image ninePartImageWithSize:self.backgroundImageView.bounds.size capInsets:self.backgroundCapInsets];
+        self.backgroundImageView.image = image;
     }
 }
 
@@ -181,6 +218,9 @@
         }
         return;
     }
+    else if (object == self.backgroundImageView) {
+        [self _arrangeBallonImage];
+    }
     else {
         if ([@[@"backgroundImage", @"backgroundCapInsets"] containsObject:keyPath]) {
     //        CAANinePartImageLayer *layer = (CAANinePartImageLayer *)self.layer;
@@ -202,14 +242,36 @@
             }
             return;
         }
+
+        if ([@[@"frame"] containsObject:keyPath]) {
+            [self _arrangeTextView];
+            [self _arrangeBallonImage];
+            return;
+        }
+
     }
 
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
 
 - (void)setString:(NSString *)string {
-    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:string attributes:@{NSFontAttributeName: self.font}];
+    NSAttributedString *attributedString;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(textView:attributedStringForString:)]) {
+        attributedString = [self.delegate textView:self attributedStringForString:string];
+    }
+    else if (self.delegate && [self.delegate respondsToSelector:@selector(regularExpressionPatternsAndBlocksForReplacingInTextView:)]) {
+        NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:string attributes:@{NSFontAttributeName: self.font}];
+        NSDictionary *replacers = [self.delegate regularExpressionPatternsAndBlocksForReplacingInTextView:self];
+        [mutableAttributedString replaceByRegularExpressionPatternsAndBlocks:replacers];
+        attributedString = [mutableAttributedString copy];
+    }
+    else {
+        attributedString = [[NSAttributedString alloc] initWithString:string attributes:@{NSFontAttributeName: self.font}];
+    }
+    self.textView.editable = YES;
     self.textView.textStorage.attributedString = attributedString;
+    [self.textView checkTextInDocument:nil];
+    self.textView.editable = NO;
     if (self.autoresizeToFit) {
         [self sizeToFit];
     }
@@ -226,7 +288,7 @@
 - (void)setAlignment:(NSTextAlignment)alignment {
     self.textView.alignment = alignment;
 
-    NSAutoresizingMaskOptions autoresizeMaskOptions = 0;
+    NSAutoresizingMaskOptions autoresizeMaskOptions = NSViewWidthSizable;
     switch (alignment) {
         case NSTextAlignmentRight:
             autoresizeMaskOptions |= NSViewMaxXMargin;
@@ -248,23 +310,52 @@
     return self.textView.alignment;
 }
 
+- (BOOL)autoresizeToFit {
+    return self->_autoresizeToFit;
+}
+
+- (void)setAutoresizeToFit:(BOOL)autoresizeToFit {
+    self->_autoresizeToFit = autoresizeToFit;
+    if (autoresizeToFit) {
+        [self sizeToFit];
+    }
+}
+
 //- (void)drawRect:(NSRect)dirtyRect {
 //    [super drawRect:dirtyRect];
 ////    [self.layer setNeedsDisplay];
 //    [self.layer displayIfNeeded];
 //}
 
-- (void)_calcContentSize {
+- (NSSize)_calcContentSize:(NSSize)size {
     NSEdgeInsets contentInsets = self.contentInsets;
-    CGFloat viewWidth = self.frame.size.width;
+    CGFloat viewWidth = size.width;
     CGFloat contentWidth = viewWidth - (contentInsets.left + contentInsets.right);
     NSSize textSize = [self.textView.attributedString boundingRectWithSize:NSSizeMake(contentWidth, 0.0f) options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading].size;
     textSize.width = ceilf(textSize.width);
-    self.contentSize = textSize;
+    return textSize;
+}
+
+- (NSSize)sizeThatFits:(NSSize)size {
+    NSEdgeInsets contentInsets = self.contentInsets;
+    NSEdgeInsets capInsets = self.backgroundCapInsets;
+    NSSize contentSize = [self _calcContentSize:size];
+    NSSize viewSize = NSSizeMake(contentInsets.left + contentSize.width + contentInsets.right, contentInsets.top + contentSize.height + contentInsets.bottom);
+
+    CGFloat minimumWidth = capInsets.left + capInsets.right;
+    if (viewSize.width < minimumWidth) {
+        viewSize.width = minimumWidth;
+    }
+    CGFloat minimumHeight = capInsets.top + capInsets.bottom;
+    if (viewSize.height < minimumHeight) {
+        viewSize.height = minimumHeight;
+    }
+
+    return viewSize;
 }
 
 - (void)sizeToFit {
-    [self _calcContentSize];
+    self.contentSize = [self _calcContentSize:self.frame.size];
 }
 
 @end

@@ -691,15 +691,16 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="442" y="1177"/>
+            <point key="canvasLocation" x="673" y="1161"/>
         </scene>
         <!--Tab View Controller-->
         <scene sceneID="qRH-Nu-MVQ">
             <objects>
                 <tabViewController selectedTabViewItemIndex="0" id="ocp-nS-ZJL" sceneMemberID="viewController">
                     <tabViewItems>
-                        <tabViewItem id="9iL-yr-w49"/>
-                        <tabViewItem id="dfj-ft-CvR"/>
+                        <tabViewItem id="Km4-hY-xbX"/>
+                        <tabViewItem id="HGx-kv-DxN"/>
+                        <tabViewItem id="BXb-0g-tpt"/>
                     </tabViewItems>
                     <tabView key="tabView" type="noTabsNoBorder" id="dqm-Rs-eVC">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
@@ -708,13 +709,88 @@
                         <tabViewItems/>
                     </tabView>
                     <connections>
-                        <segue destination="5CE-8U-Jhg" kind="relationship" relationship="tabItems" id="5NH-Q6-NrU"/>
-                        <segue destination="XfG-lQ-9wD" kind="relationship" relationship="tabItems" id="HBr-lO-ij1"/>
+                        <segue destination="FGz-Gk-40C" kind="relationship" relationship="tabItems" id="0Av-Ez-cMH"/>
+                        <segue destination="5CE-8U-Jhg" kind="relationship" relationship="tabItems" id="v9Y-9v-vi5"/>
+                        <segue destination="XfG-lQ-9wD" kind="relationship" relationship="tabItems" id="1xX-Zo-Mmj"/>
                     </connections>
                 </tabViewController>
                 <customObject id="rhV-yW-ODK" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="77" y="764"/>
+        </scene>
+        <!--Chat-->
+        <scene sceneID="iDc-fw-KI6">
+            <objects>
+                <viewController title="Chat" id="FGz-Gk-40C" customClass="ChatViewController" customModule="BalloonChatApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <scrollView key="view" autohidesScrollers="YES" horizontalLineScroll="60" horizontalPageScroll="10" verticalLineScroll="60" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="Cc4-Pb-QMo" customClass="BCBalloonChatView">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <clipView key="contentView" id="LYt-I1-lxR">
+                            <rect key="frame" x="1" y="0.0" width="448" height="299"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="60" rowSizeStyle="automatic" headerView="6X2-fV-ic5" viewBased="YES" id="pRT-wk-y3w">
+                                    <rect key="frame" x="0.0" y="0.0" width="448" height="276"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                    <tableColumns>
+                                        <tableColumn identifier="" width="447" minWidth="40" maxWidth="1000" id="Yc0-bs-ajU">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                            </tableHeaderCell>
+                                            <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Text Cell" id="MzA-cG-7wc">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                            <prototypeCellViews>
+                                                <tableCellView identifier="cell" id="kJ4-mz-pzw" customClass="BCBalloonTextCellView">
+                                                    <rect key="frame" x="0.0" y="0.0" width="447" height="60"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <subviews>
+                                                        <customView identifier="cell" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gve-Jp-4B4" customClass="BCBalloonTextView">
+                                                            <rect key="frame" x="0.0" y="0.0" width="447" height="60"/>
+                                                        </customView>
+                                                    </subviews>
+                                                </tableCellView>
+                                            </prototypeCellViews>
+                                        </tableColumn>
+                                    </tableColumns>
+                                    <connections>
+                                        <outlet property="dataSource" destination="Cc4-Pb-QMo" id="OA9-LH-0dZ"/>
+                                        <outlet property="delegate" destination="Cc4-Pb-QMo" id="Jdc-kh-hye"/>
+                                    </connections>
+                                </tableView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="HBj-21-dU9">
+                            <rect key="frame" x="1" y="283" width="448" height="16"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="P9n-pb-AbB">
+                            <rect key="frame" x="224" y="17" width="15" height="102"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <tableHeaderView key="headerView" id="6X2-fV-ic5">
+                            <rect key="frame" x="0.0" y="0.0" width="448" height="23"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </tableHeaderView>
+                        <connections>
+                            <outlet property="tableView" destination="pRT-wk-y3w" id="XeR-wW-5Wd"/>
+                        </connections>
+                    </scrollView>
+                    <connections>
+                        <outlet property="chatView" destination="Cc4-Pb-QMo" id="d3X-Rx-1wB"/>
+                    </connections>
+                </viewController>
+                <customObject id="nD7-ed-rQk" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-152" y="1230"/>
         </scene>
         <!--Text-->
         <scene sceneID="BTq-Zl-MFl">
@@ -722,16 +798,30 @@
                 <customObject id="bE7-Nc-Mfj" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <viewController title="Text" id="5CE-8U-Jhg" customClass="TextViewController" customModule="BalloonChatApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="14j-6e-Ucq">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="200"/>
+                        <rect key="frame" x="0.0" y="0.0" width="220" height="200"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="psL-Km-pGu" customClass="BCBalloonTextView">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="psL-Km-pGu" customClass="BCBalloonTextView">
                                 <rect key="frame" x="20" y="130" width="180" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="b75-bu-epN"/>
+                                </constraints>
                             </customView>
-                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QfA-SY-Ue9" customClass="BCBalloonTextView">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="QfA-SY-Ue9" customClass="BCBalloonTextView">
                                 <rect key="frame" x="20" y="75" width="180" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="ETU-xf-pZU"/>
+                                </constraints>
                             </customView>
                         </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="QfA-SY-Ue9" secondAttribute="trailing" constant="20" id="5dM-vk-tGa"/>
+                            <constraint firstAttribute="trailing" secondItem="psL-Km-pGu" secondAttribute="trailing" constant="20" id="VZk-1N-qKO"/>
+                            <constraint firstItem="QfA-SY-Ue9" firstAttribute="leading" secondItem="14j-6e-Ucq" secondAttribute="leading" constant="20" id="ZRc-fz-Zsw"/>
+                            <constraint firstItem="psL-Km-pGu" firstAttribute="top" secondItem="14j-6e-Ucq" secondAttribute="top" constant="20" id="aCH-UT-Mw5"/>
+                            <constraint firstItem="QfA-SY-Ue9" firstAttribute="top" secondItem="psL-Km-pGu" secondAttribute="bottom" constant="5" id="d2C-sm-7OS"/>
+                            <constraint firstItem="psL-Km-pGu" firstAttribute="leading" secondItem="14j-6e-Ucq" secondAttribute="leading" constant="20" id="mqo-H2-mKx"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="leftBalloonView" destination="psL-Km-pGu" id="Zaz-Yb-gSI"/>
@@ -739,7 +829,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="77" y="1209"/>
+            <point key="canvasLocation" x="268" y="1193"/>
         </scene>
     </scenes>
 </document>
