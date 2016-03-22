@@ -8,14 +8,12 @@
 
 #import "BCBalloonTextView.h"
 
-#import <CocoaExtension/CocoaExtension.h>
-
 #import <cdebug/debug.h>
 
 
 @implementation NSMutableAttributedString (BCBalloonTextViewReplacing)
 
-- (void)replaceByRegularExpressionPatternsAndBlocks:(NSDictionary<NSString *, BCBalloonTextViewReplacingBlock> *)blocks {
+- (void)replaceByRegularExpressionPatternsAndBlocks:(NSDictionary *)blocks {
     for (NSString *pattern in blocks.keyEnumerator) {
         NSString *plain = [self string];
 
@@ -211,7 +209,7 @@
     self.frame = frame;
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (object == self.textView || object == self.textView.textStorage) {
         if (self.autoresizeToFit) {
             [self sizeToFit];

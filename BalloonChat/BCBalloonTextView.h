@@ -6,8 +6,20 @@
 //  Copyright © 2016년 youknowone.org. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <CocoaExtension/CocoaExtension.h>
 
+
+#if !defined(NS_ASSUME_NONNULL_BEGIN)
+#define NS_ASSUME_NONNULL_BEGIN
+#define NS_ASSUME_NONNULL_END
+#endif
+
+#if !defined(_Nullable)
+#define _Nullable
+#define _Nonnull
+#define nullable
+#define nonnull
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,readonly) NSFont *font;
 
 @property(nonatomic,strong) NSImageView *backgroundImageView;
-@property(nullable,nonatomic,strong) NSImage *backgroundImage;
+@property(nonatomic,strong,nullable) NSImage *backgroundImage;
 @property(nonatomic,assign) NSEdgeInsets backgroundCapInsets;
 
 - (void)setBalloonImage:(NSImage *)image capInsets:(NSEdgeInsets)capInsets;
@@ -43,15 +55,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-typedef NSAttributedString *_NSAttributedStringRef;
+
+typedef NSAttributedString  *_NSAttributedStringRef;
 typedef _Nullable _NSAttributedStringRef (^BCBalloonTextViewReplacingBlock)(NSString *string);
 
 @protocol BCBalloonTextViewDelegate <NSObject>
 
 @optional
 - (NSAttributedString *)textView:(BCBalloonTextView *)balloonTextView attributedStringForString:(NSString *)string;
+
 //! @brief The keys of dictionary are patterns of NSRegularExpression. The values of them are BCBalloonTextViewReplacingBlock.
-- (NSDictionary<NSString *, BCBalloonTextViewReplacingBlock> *)regularExpressionPatternsAndBlocksForReplacingInTextView:(BCBalloonTextView *)balloonTextView;
+- (NSDictionary
+   #if __has_feature(objc_generics)
+   <NSString *, BCBalloonTextViewReplacingBlock>
+   #endif
+   *)regularExpressionPatternsAndBlocksForReplacingInTextView:(BCBalloonTextView *)balloonTextView;
 
 @end
 

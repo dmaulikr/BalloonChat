@@ -15,5 +15,5 @@ Pod::Spec.new do |s|
   s.source_files = "BalloonChat/*.{h,m}"
   s.public_header_files = "BalloonChat/*.h"
 
-  s.dependency 'FoundationExtension', '~> 1.2.0'
+  s.dependency 'FoundationExtension', '~> 1.2.2'
 end

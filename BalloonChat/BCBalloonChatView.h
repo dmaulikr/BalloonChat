@@ -9,6 +9,14 @@
 #import <Cocoa/Cocoa.h>
 #import <BalloonChat/BCBalloonTextView.h>
 
+
+#if !__has_feature(nullability) && !defined(NS_ASSUME_NONNULL_BEGIN)
+#define NS_ASSUME_NONNULL_BEGIN
+#define NS_ASSUME_NONNULL_END
+#define _Nullable
+#define nullable
+#endif
+
 NS_ASSUME_NONNULL_BEGIN
 
 
