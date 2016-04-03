@@ -53,6 +53,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic,copy) NSString *string;
 
+#if __MAC_OS_X_VERSION_MAX_ALLOWED <= 1090
+- (NSSize)sizeThatFits:(NSSize)size;
+#endif
+
 @end
 
 
