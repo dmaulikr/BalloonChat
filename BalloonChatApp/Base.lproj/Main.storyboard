@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
     </dependencies>
     <scenes>
@@ -722,20 +721,20 @@
         <scene sceneID="iDc-fw-KI6">
             <objects>
                 <viewController title="Chat" id="FGz-Gk-40C" customClass="ChatViewController" customModule="BalloonChatApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <scrollView key="view" autohidesScrollers="YES" horizontalLineScroll="60" horizontalPageScroll="10" verticalLineScroll="60" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="Cc4-Pb-QMo" customClass="BCBalloonChatView">
+                    <scrollView key="view" autohidesScrollers="YES" horizontalLineScroll="60" horizontalPageScroll="10" verticalLineScroll="60" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" id="Cc4-Pb-QMo" customClass="BCBalloonChatView">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <clipView key="contentView" id="LYt-I1-lxR">
                             <rect key="frame" x="1" y="0.0" width="448" height="299"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="60" rowSizeStyle="automatic" headerView="6X2-fV-ic5" viewBased="YES" id="pRT-wk-y3w">
+                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="60" rowSizeStyle="automatic" headerView="6X2-fV-ic5" viewBased="YES" id="pRT-wk-y3w" customClass="BCBalloonTableView">
                                     <rect key="frame" x="0.0" y="0.0" width="448" height="276"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                     <tableColumns>
-                                        <tableColumn identifier="" width="447" minWidth="40" maxWidth="1000" id="Yc0-bs-ajU">
+                                        <tableColumn identifier="" width="447" minWidth="40" maxWidth="20000" id="Yc0-bs-ajU">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -748,44 +747,47 @@
                                             </textFieldCell>
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                             <prototypeCellViews>
-                                                <tableCellView identifier="cell" id="kJ4-mz-pzw" customClass="BCBalloonTextCellView">
-                                                    <rect key="frame" x="0.0" y="0.0" width="447" height="60"/>
+                                                <tableCellView identifier="cell" id="kJ4-mz-pzw" customClass="BalloonTextCellView" customModule="BalloonChatApp" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="448" height="60"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
-                                                        <customView identifier="cell" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gve-Jp-4B4" customClass="BCBalloonTextView">
-                                                            <rect key="frame" x="0.0" y="0.0" width="447" height="60"/>
+                                                        <customView identifier="cell" translatesAutoresizingMaskIntoConstraints="NO" id="Gve-Jp-4B4" customClass="BCBalloonTextView">
+                                                            <rect key="frame" x="0.0" y="0.0" width="448" height="60"/>
                                                         </customView>
                                                     </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="Gve-Jp-4B4" firstAttribute="leading" secondItem="kJ4-mz-pzw" secondAttribute="leading" id="KgD-gb-wJb"/>
+                                                        <constraint firstAttribute="bottom" secondItem="Gve-Jp-4B4" secondAttribute="bottom" id="QN9-hH-dJb"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Gve-Jp-4B4" secondAttribute="trailing" id="gFE-uy-88j"/>
+                                                        <constraint firstItem="Gve-Jp-4B4" firstAttribute="top" secondItem="kJ4-mz-pzw" secondAttribute="top" id="tfp-Is-fW3"/>
+                                                    </constraints>
                                                 </tableCellView>
                                             </prototypeCellViews>
                                         </tableColumn>
                                     </tableColumns>
                                     <connections>
-                                        <outlet property="dataSource" destination="Cc4-Pb-QMo" id="OA9-LH-0dZ"/>
-                                        <outlet property="delegate" destination="Cc4-Pb-QMo" id="Jdc-kh-hye"/>
+                                        <outlet property="dataSource" destination="FGz-Gk-40C" id="wrd-0H-X9b"/>
+                                        <outlet property="delegate" destination="FGz-Gk-40C" id="OKJ-8n-x5T"/>
                                     </connections>
                                 </tableView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </clipView>
                         <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="HBj-21-dU9">
-                            <rect key="frame" x="1" y="283" width="448" height="16"/>
+                            <rect key="frame" x="-100" y="-100" width="448" height="16"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="P9n-pb-AbB">
-                            <rect key="frame" x="224" y="17" width="15" height="102"/>
+                            <rect key="frame" x="-100" y="-100" width="15" height="102"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <tableHeaderView key="headerView" id="6X2-fV-ic5">
                             <rect key="frame" x="0.0" y="0.0" width="448" height="23"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </tableHeaderView>
-                        <connections>
-                            <outlet property="tableView" destination="pRT-wk-y3w" id="XeR-wW-5Wd"/>
-                        </connections>
                     </scrollView>
                     <connections>
-                        <outlet property="chatView" destination="Cc4-Pb-QMo" id="d3X-Rx-1wB"/>
+                        <outlet property="tableView" destination="pRT-wk-y3w" id="qog-fY-jjv"/>
                     </connections>
                 </viewController>
                 <customObject id="nD7-ed-rQk" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

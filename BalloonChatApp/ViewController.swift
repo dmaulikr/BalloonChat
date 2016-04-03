@@ -7,7 +7,7 @@
 //
 
 import Cocoa
-import BalloonChat
+//import BalloonChat
 
 class NinePartImageViewController: NSViewController {
 
@@ -68,13 +68,55 @@ class TextViewController: NSViewController, BCBalloonTextViewDelegate {
 
 }
 
-//class ChatViewController: NSViewController {
-//
-//    @IBOutlet var chatView: BCBalloonChatView! = nil
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        assert(self.chatView != nil)
-//    }
-//}
+
+class BalloonTextCellView: BCBalloonTextCellView {
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        let view = self.balloonView
+        view.autoresizeToFit = true
+        view.textView.automaticLinkDetectionEnabled = true
+        view.backgroundImage = NSImage(named: "BalloonSampleLeft")!
+        view.backgroundCapInsets = NSEdgeInsets(top: 8.0, left: 16.0, bottom: 27.0, right: 8.0)
+        view.contentInsets = NSEdgeInsets(top: 8.0, left: 16.0, bottom: 8.0, right: 8.0)
+    }
+}
+
+
+class ChatViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
+
+    @IBOutlet var tableView: BCBalloonTableView! = nil;
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        assert(self.tableView != nil)
+        self.tableView.columnIndexToFitWhenResizing = 0
+    }
+
+    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+        return 100;
+    }
+
+    func _resize(view: BCBalloonTextCellView) {
+        var frame = view.balloonView.frame
+        let baseWidth = self.tableView.frame.size.width
+        frame.size.width = baseWidth * 3 / 4
+        view.balloonView.frame = frame
+    }
+
+    func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+        let view: BCBalloonTextCellView = tableView.makeViewWithIdentifier("cell", owner: self) as! BCBalloonTextCellView
+        _resize(view)
+        view.balloonView.string = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        let height = view.balloonView.sizeThatFits(view.frame.size).height
+        return height
+    }
+
+    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        let view: BCBalloonTextCellView = tableView.makeViewWithIdentifier("cell", owner: self) as! BCBalloonTextCellView
+        _resize(view)
+        view.balloonView.string = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        return view
+    }
+}
 

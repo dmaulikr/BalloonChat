@@ -51,6 +51,14 @@ NS_ASSUME_NONNULL_BEGIN
 //@end
 
 
+@interface BCBalloonTableView : NSTableView
+
+@property(nonatomic,assign) NSInteger columnIndexToFitWhenResizing;
+@property(nonatomic,assign) BOOL tracksContentWhenResizing;
+
+@end
+
+
 @interface BCBalloonTextCellView : NSTableCellView
 
 @property(nonatomic,strong) IBOutlet BCBalloonTextView *balloonView;

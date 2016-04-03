@@ -92,6 +92,95 @@
 //@end
 
 
+@interface BCBalloonTableView () {
+    NSInteger _columnIndexToFitWhenResizing;
+}
+
+@end
+
+
+@implementation BCBalloonTableView
+
+- (void)_initBCBalloonTableView {
+    self->_columnIndexToFitWhenResizing = NSNotFound;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    self = [super initWithCoder:coder];
+    [self _initBCBalloonTableView];
+    return self;
+}
+
+- (instancetype)initWithFrame:(NSRect)frameRect {
+    self = [super initWithFrame:frameRect];
+    [self _initBCBalloonTableView];
+    return self;
+}
+
+- (void)dealloc {
+    self.columnIndexToFitWhenResizing = NSNotFound; // to removeObserver
+}
+
+- (NSInteger)columnIndexToFitWhenResizing {
+    return self->_columnIndexToFitWhenResizing;
+}
+
+- (void)setColumnIndexToFitWhenResizing:(NSInteger)columnIndexToFitWhenResizing {
+    if (self->_columnIndexToFitWhenResizing == columnIndexToFitWhenResizing) {
+        return;
+    }
+    if (columnIndexToFitWhenResizing == NSNotFound) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:NSTableViewColumnDidResizeNotification object:nil];
+        goto finalize;
+    }
+    if (self->_columnIndexToFitWhenResizing == NSNotFound) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_tableViewColumnDidResized:) name:NSTableViewColumnDidResizeNotification object:nil];
+    }
+
+finalize:
+    self->_columnIndexToFitWhenResizing = columnIndexToFitWhenResizing;
+}
+
+- (void)_tableViewColumnDidResized:(NSNotification *)notification {
+    NSInteger columnIndexToFitWhenResizing = self.columnIndexToFitWhenResizing;
+    assert(columnIndexToFitWhenResizing != NSNotFound);
+
+    NSRect visibleRect = [self visibleRect];
+
+    NSRect lastRect = visibleRect;
+    lastRect.origin.y += lastRect.size.height - 1;
+    lastRect.size.height = 1.0f;
+    NSInteger lastRow = [self rowsInRect:lastRect].location;
+
+    CGFloat columnWidth = self.frame.size.width;
+    for (NSInteger i = 0; i < self.numberOfColumns; i++ ) {
+        if (i == columnIndexToFitWhenResizing) {
+            continue;
+        }
+        NSTableColumn *column = self.tableColumns[i];
+        columnWidth -= column.width;
+    }
+    if (columnWidth <= 0.0f) {
+        columnWidth = 0.0f;
+    }
+    NSTableColumn *mainColumn = self.tableColumns[columnIndexToFitWhenResizing];
+    mainColumn.width = self.frame.size.width;
+
+    [self reloadData]; // to resize cells
+
+    if (self.tracksContentWhenResizing) {
+        NSRect targetRect = [self rectOfRow:lastRow];
+        // force to scroll to the bottom
+        targetRect.origin.y += targetRect.size.height - self.superview.frame.size.height;
+        targetRect.size.height = self.superview.frame.size.height;
+
+        [self scrollRectToVisible:targetRect];
+    }
+}
+
+@end
+
+
 @implementation BCBalloonTextCellView
 
 - (void)_initChatView {
