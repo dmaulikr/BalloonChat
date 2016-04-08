@@ -8,8 +8,6 @@
 
 import XCTest
 
-@testable import BalloonChat
-
 
 class BalloonChatViewTests: XCTestCase {
 

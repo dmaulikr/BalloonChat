@@ -9,17 +9,11 @@
 #import <CocoaExtension/CocoaExtension.h>
 
 
-#if !defined(NS_ASSUME_NONNULL_BEGIN)
+#if !__has_feature(nullability) && !defined(NS_ASSUME_NONNULL_BEGIN)
 #define NS_ASSUME_NONNULL_BEGIN
 #define NS_ASSUME_NONNULL_END
 #endif
 
-#if !defined(_Nullable)
-#define _Nullable
-#define _Nonnull
-#define nullable
-#define nonnull
-#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -60,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
-typedef _Nonnull NSAttributedString *(^BCBalloonTextViewReplacingBlock)(_Nonnull NSString *string);
+typedef NSAttributedString * (^BCBalloonTextViewReplacingBlock) (NSString *string);
 
 @protocol BCBalloonTextViewDelegate <NSObject>
 

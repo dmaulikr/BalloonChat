@@ -11,14 +11,13 @@
 *mode1v3
 *pbxuser
 *perspectivev3
-*.xcodeproj/xcuserdata
-*xcuserdata*
-*.xcworkspace*
+xcuserdata
+*.xcworkspace
 
 build
 include
 docs
 
-#pods
+# Cocoapods
 Podfile.lock
 Pods

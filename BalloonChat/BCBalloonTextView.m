@@ -25,7 +25,7 @@
 
         __block NSMutableArray *rangeStrings = [NSMutableArray array];
         NSRange searchRange = NSMakeRange(0, plain.length);
-        [regex enumerateMatchesInString:plain options:0 range:searchRange usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+        [regex enumerateMatchesInString:plain options:0 range:searchRange usingBlock:^(NSTextCheckingResult * result, NSMatchingFlags flags, BOOL * stop) {
             [rangeStrings addObject:NSStringFromRange(result.range)];
         }];
 
