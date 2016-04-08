@@ -25,7 +25,7 @@
 
         __block NSMutableArray *rangeStrings = [NSMutableArray array];
         NSRange searchRange = NSMakeRange(0, plain.length);
-        [regex enumerateMatchesInString:plain options:0 range:searchRange usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+        [regex enumerateMatchesInString:plain options:0 range:searchRange usingBlock:^(NSTextCheckingResult * result, NSMatchingFlags flags, BOOL * stop) {
             [rangeStrings addObject:NSStringFromRange(result.range)];
         }];
 
@@ -326,22 +326,27 @@
 //    [self.layer displayIfNeeded];
 //}
 
-- (NSSize)_calcContentSize:(NSSize)size {
+- (NSSize)contentSizeThatFits:(NSSize)size {
     NSEdgeInsets contentInsets = self.contentInsets;
     CGFloat viewWidth = size.width;
     CGFloat maximumWidth = viewWidth - (contentInsets.left + contentInsets.right);
 
+    // the minimal width calculation (especially for multi-line)
     CGFloat contentWidth = [self.textView.attributedString boundingRectWithSize:NSSizeMake(maximumWidth, 0.0f) options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading].size.width;
-    contentWidth = ceilf(contentWidth);
-    CGFloat contentHeight = [self.textView.layoutManager boundingRectForGlyphRange:NSMakeRange(0, self.textView.attributedString.length) inTextContainer:self.textView.textContainer].size.height;
 
-    return CGSizeMake(contentWidth, contentHeight);
+    // the precise height calculation
+    self.textView.textContainer.containerSize = NSSizeMake(maximumWidth, CGFLOAT_MAX);
+    NSSize contentSize = [self.textView.layoutManager boundingRectForGlyphRange:NSMakeRange(0, self.textView.attributedString.length) inTextContainer:self.textView.textContainer].size;
+
+    // so update width
+    contentSize.width = ceilf(MIN(contentWidth, contentSize.width));
+    return contentSize;
 }
 
 - (NSSize)sizeThatFits:(NSSize)size {
     NSEdgeInsets contentInsets = self.contentInsets;
     NSEdgeInsets capInsets = self.backgroundCapInsets;
-    NSSize contentSize = [self _calcContentSize:size];
+    NSSize contentSize = [self contentSizeThatFits:size];
     NSSize viewSize = NSSizeMake(contentInsets.left + contentSize.width + contentInsets.right, contentInsets.top + contentSize.height + contentInsets.bottom);
 
     CGFloat minimumWidth = capInsets.left + capInsets.right;
@@ -357,7 +362,7 @@
 }
 
 - (void)sizeToFit {
-    self.contentSize = [self _calcContentSize:self.frame.size];
+    self.contentSize = [self contentSizeThatFits:self.frame.size];
 }
 
 @end

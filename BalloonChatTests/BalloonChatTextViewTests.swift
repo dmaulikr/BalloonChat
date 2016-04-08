@@ -8,8 +8,6 @@
 
 import XCTest
 
-@testable import BalloonChat
-
 
 class BalloonChatViewTests: XCTestCase {
 
@@ -30,17 +28,27 @@ class BalloonChatViewTests: XCTestCase {
     }
 
     func testCalcContentSize() {
-        let view = BCBalloonTextView(frame: NSRect(x: 0.0, y: 0.0, width: 60.0, height: 40.0))
+        let frame = NSRect(x: 0.0, y: 0.0, width: 60.0, height: 40.0)
+        let view = BCBalloonTextView(frame: frame)
+
         view.string = "testable content"
-        view.sizeToFit()
-        XCTAssert(view.contentSize.width < 60.0)
-        XCTAssert(view.contentSize.height > 0.0)
-        XCTAssert(view.contentSize.height <= 40.0)
-        let height1 = view.contentSize.height
-        view.string = "testale content with multiple lines"
-        view.sizeToFit()
-        XCTAssert(view.contentSize.width <= 60.0)
-        XCTAssert(view.contentSize.height > height1)
+        let originalSize = view.contentSizeThatFits(frame.size)
+
+        XCTAssert(originalSize.width < 60.0)
+        XCTAssert(originalSize.height > 0.0)
+        XCTAssert(originalSize.height <= 40.0)
+
+        view.string = "testable content with multi-lines"
+        let longSize = view.contentSizeThatFits(frame.size)
+        XCTAssert(longSize.width <= 60.0)  // respect boundary
+        XCTAssert(longSize.height > originalSize.height + 1)
+
+        view.string = "testable content\nsecond line"
+        let multiSize = view.contentSizeThatFits(frame.size)
+        XCTAssert(multiSize.width == originalSize.width)  // respect boundary
+        XCTAssert(multiSize.height > originalSize.height + 1)
+
+        XCTAssert(longSize.height == multiSize.height)  // height of 2-lines
     }
 
     func testSizeToFit() {
