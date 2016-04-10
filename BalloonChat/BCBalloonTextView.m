@@ -87,6 +87,7 @@
     NSTextView *textView = [[NSTextView alloc] initWithFrame:self.bounds];
     textView.editable = NO;
     textView.verticallyResizable = NO;
+    textView.textContainer.widthTracksTextView = YES;
     textView.textContainer.lineFragmentPadding = 0.0f;
     textView.backgroundColor = [NSColor clearColor];
     [self addSubview:textView];
@@ -328,10 +329,13 @@
 - (NSSize)_calcContentSize:(NSSize)size {
     NSEdgeInsets contentInsets = self.contentInsets;
     CGFloat viewWidth = size.width;
-    CGFloat contentWidth = viewWidth - (contentInsets.left + contentInsets.right);
-    NSSize textSize = [self.textView.attributedString boundingRectWithSize:NSSizeMake(contentWidth, 0.0f) options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading].size;
-    textSize.width = ceilf(textSize.width);
-    return textSize;
+    CGFloat maximumWidth = viewWidth - (contentInsets.left + contentInsets.right);
+
+    CGFloat contentWidth = [self.textView.attributedString boundingRectWithSize:NSSizeMake(maximumWidth, 0.0f) options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading].size.width;
+    contentWidth = ceilf(contentWidth);
+    CGFloat contentHeight = [self.textView.layoutManager boundingRectForGlyphRange:NSMakeRange(0, self.textView.attributedString.length) inTextContainer:self.textView.textContainer].size.height;
+
+    return CGSizeMake(contentWidth, contentHeight);
 }
 
 - (NSSize)sizeThatFits:(NSSize)size {

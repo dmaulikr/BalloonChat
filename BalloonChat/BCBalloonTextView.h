@@ -60,8 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
-typedef NSAttributedString  *_NSAttributedStringRef;
-typedef _Nullable _NSAttributedStringRef (^BCBalloonTextViewReplacingBlock)(NSString *string);
+typedef _Nonnull NSAttributedString *(^BCBalloonTextViewReplacingBlock)(_Nonnull NSString *string);
 
 @protocol BCBalloonTextViewDelegate <NSObject>
 

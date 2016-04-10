@@ -751,14 +751,14 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="448" height="60"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
-                                                        <customView identifier="cell" translatesAutoresizingMaskIntoConstraints="NO" id="Gve-Jp-4B4" customClass="BCBalloonTextView">
+                                                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="Gve-Jp-4B4" customClass="BCBalloonTextView">
                                                             <rect key="frame" x="0.0" y="0.0" width="448" height="60"/>
                                                         </customView>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="Gve-Jp-4B4" firstAttribute="leading" secondItem="kJ4-mz-pzw" secondAttribute="leading" id="KgD-gb-wJb"/>
                                                         <constraint firstAttribute="bottom" secondItem="Gve-Jp-4B4" secondAttribute="bottom" id="QN9-hH-dJb"/>
-                                                        <constraint firstAttribute="trailing" secondItem="Gve-Jp-4B4" secondAttribute="trailing" id="gFE-uy-88j"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Gve-Jp-4B4" secondAttribute="trailing" constant="-1" id="gFE-uy-88j"/>
                                                         <constraint firstItem="Gve-Jp-4B4" firstAttribute="top" secondItem="kJ4-mz-pzw" secondAttribute="top" id="tfp-Is-fW3"/>
                                                     </constraints>
                                                 </tableCellView>
