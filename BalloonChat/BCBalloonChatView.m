@@ -94,6 +94,7 @@
 
 @interface BCBalloonTableView () {
     NSInteger _columnIndexToFitWhenResizing;
+    NSInteger _lastRow;
 }
 
 @end
@@ -129,28 +130,41 @@
     if (self->_columnIndexToFitWhenResizing == columnIndexToFitWhenResizing) {
         return;
     }
+    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     if (columnIndexToFitWhenResizing == NSNotFound) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:NSTableViewColumnDidResizeNotification object:nil];
+        [defaultCenter removeObserver:self name:NSViewBoundsDidChangeNotification object:nil];
+        [defaultCenter removeObserver:self name:NSTableViewColumnDidResizeNotification object:nil];
         goto finalize;
     }
     if (self->_columnIndexToFitWhenResizing == NSNotFound) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_tableViewColumnDidResized:) name:NSTableViewColumnDidResizeNotification object:nil];
+        self.postsBoundsChangedNotifications = YES;
+        [defaultCenter addObserver:self selector:@selector(_tableViewBoundsDidChange:) name:NSViewBoundsDidChangeNotification object:nil];
+        [defaultCenter addObserver:self selector:@selector(_tableViewColumnDidResize:) name:NSTableViewColumnDidResizeNotification object:nil];
     }
 
 finalize:
     self->_columnIndexToFitWhenResizing = columnIndexToFitWhenResizing;
 }
 
-- (void)_tableViewColumnDidResized:(NSNotification *)notification {
-    NSInteger columnIndexToFitWhenResizing = self.columnIndexToFitWhenResizing;
-    assert(columnIndexToFitWhenResizing != NSNotFound);
-
-    NSRect visibleRect = [self visibleRect];
+- (void)_tableViewBoundsDidChange:(NSNotification *)notifiaction {
+    NSRect visibleRect = self.visibleRect;
 
     NSRect lastRect = visibleRect;
     lastRect.origin.y += lastRect.size.height - 1;
     lastRect.size.height = 1.0f;
-    NSInteger lastRow = [self rowsInRect:lastRect].location;
+    NSRange rowsRange = [self rowsInRect:lastRect];
+    NSInteger lastRow = rowsRange.location;
+    if (rowsRange.length == 0) {
+        lastRow = self.numberOfRows - 1;
+    }
+    self->_lastRow = lastRow;
+}
+
+- (void)_tableViewColumnDidResize:(NSNotification *)notification {
+    NSInteger columnIndexToFitWhenResizing = self.columnIndexToFitWhenResizing;
+    assert(columnIndexToFitWhenResizing != NSNotFound);
+
+    NSInteger lastRow = self->_lastRow;
 
     CGFloat columnWidth = self.frame.size.width;
     for (NSInteger i = 0; i < self.numberOfColumns; i++ ) {
@@ -203,7 +217,7 @@ finalize:
 - (void)awakeFromNib {
     [super awakeFromNib];
     if (self.balloonView == nil) {
-         [self _initChatView];
+        [self _initChatView];
     }
 }
 
